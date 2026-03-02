@@ -1,0 +1,6 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "exe:veitoris"
+    - path: "./app"
+      component: "exe:persistencehs"
