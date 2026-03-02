@@ -107,6 +107,12 @@ boundary2 = foldl' (\m t -> Map.insert t (v3plex t) m) Map.empty tris
 d1 :: M.Matrix Z2
 d1 = M.transpose $ M.fromLists [boundary1 Map.! e | e <- edges]
 
+d2 :: M.Matrix Z2 
+d2 = M.transpose $ M.fromLists [boundary2 Map.! t | t <- tris]
+
+
+-- >>> 
+
 --
 -- ∂1 = ab bc ac cd de ce 
 --     a 1  0  1  0  0  0 
@@ -124,4 +130,4 @@ d1 = M.transpose $ M.fromLists [boundary1 Map.! e | e <- edges]
 --  de 0    1
 --  ce 0    1
 main :: IO () 
-main = print d1
+main = putStrLn "done"
