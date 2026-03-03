@@ -3,10 +3,8 @@ module Main where
 import qualified Data.Array as A (Array, listArray, (!))
 import qualified Data.IntMap.Strict as IM
 import qualified Data.IntSet as IS
-import Data.List (findIndex, transpose)
+import Data.List (findIndex, transpose, foldl')
 import qualified Data.Map as Map
-import qualified Data.Matrix as M
-import qualified Data.Vector as Vec
 
 type Point = (Double, Double, Double)
 
@@ -33,7 +31,10 @@ instance Num Z2 where
   negate x = x
   abs x = x
   signum x = x
-  fromInteger z = Z2 (odd z)
+  fromInteger z = Z2 (odd z) 
+
+isOne :: Z2 -> Bool 
+isOne (Z2 b) = b
 
 eps :: Double
 eps = 1
@@ -50,7 +51,7 @@ torus u v =
   )
 
 points :: [Point]
-points = [torus s t | s <- [0, 0.2 .. 2 * pi], t <- [0, 0.2 .. 2 * pi]]
+points = [torus s t | s <- [0, 0.4 .. 2 * pi], t <- [0, 0.4 .. 2 * pi]]
 
 n :: Int
 n = length points
@@ -109,16 +110,11 @@ boundary1 = foldl' (\m e -> Map.insert e (v2plex e) m) Map.empty edges
 boundary2 :: Map.Map Tri [Z2]
 boundary2 = foldl' (\m t -> Map.insert t (v3plex t) m) Map.empty tris
 
-d1 :: M.Matrix Z2
+d1 :: Mat
 d1 = transpose [boundary1 Map.! e | e <- edges]
 
-d2 :: M.Matrix Z2
-d2 = M.transpose $ M.fromLists [boundary2 Map.! t | t <- tris]
-
--- findPivot :: Vec.Vector Z2 -> Int
--- findPivot v = case Vec.findIndex (== 1) v of
---  (Just i) -> i
---  Nothing -> length v
+d2 :: Mat
+d2 = transpose [boundary2 Map.! t | t <- tris]
 
 swapAt :: Int -> Int -> [a] -> [a]
 swapAt i j xs
@@ -146,7 +142,7 @@ rankZ2 m0 = go 0 0 m0
               let m1 = swapAt r p m
                   pivot = m1 !! r
                   m2 =
-                    [ if i /= r && (row !! c)
+                    [ if i /= r && isOne (row !! c)
                         then zipWith (+) row pivot
                         else row
                     | (i, row) <- zip [0 ..] m1
@@ -154,12 +150,13 @@ rankZ2 m0 = go 0 0 m0
                in go (r + 1) (c + 1) m2
 
     findPivot r c m =
-      (+ r) <$> findIndex (\row -> row !! c) (drop r m)
+      (+ r) <$> findIndex (\row -> isOne (row !! c)) (drop r m)
 
--- rref :: M.Matrix Z2 -> M.Matrix Z2
+dC1 :: Int
+dC1 = length edges 
 
--- where r = nrows M
---       c = ncols M
+beta1 :: Int
+beta1 = dC1 - rankZ2 d1 - rankZ2 d2 
 
 -- vertices a b c d e
 -- edges ab bc ac cd de ce
@@ -183,6 +180,7 @@ rankZ2 m0 = go 0 0 m0
 --
 --  >>> a = M.fromLists [[1,1,1],[2,2,2],[3,3,3]]
 --  >>>M.getMatrixAsVector a
--- [1,1,1,2,2,2,3,3,3]
+-- Not in scope: `M.fromLists'
+-- NB: no module named `M' is imported.
 main :: IO ()
-main = putStrLn "done"
+main = print beta1
