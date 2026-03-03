@@ -103,6 +103,7 @@ executable veitoris
     import: warnings
     main-is: veitoris.hs
     hs-source-dirs: src
+    other-modules: Beta0 
     build-depends:
         base >=4.18 && <4.23
         , containers
