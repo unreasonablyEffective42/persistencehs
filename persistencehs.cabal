@@ -64,8 +64,8 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    
-      base ^>=4.18.3.0
+    build-depends:
+      base >=4.18 && <4.23
       , containers
       , matrix
 
@@ -90,7 +90,7 @@ executable persistencehs
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base ^>=4.18.3.0,
+        base >=4.18 && <4.23,
         persistencehs
 
     -- Directories containing source files.
@@ -104,8 +104,9 @@ executable veitoris
     main-is: veitoris.hs
     hs-source-dirs: src
     build-depends:
-        base ^>=4.18.3.0
+        base >=4.18 && <4.23
         , containers
+        , vector
         , matrix
         , array
     default-language: Haskell2010
