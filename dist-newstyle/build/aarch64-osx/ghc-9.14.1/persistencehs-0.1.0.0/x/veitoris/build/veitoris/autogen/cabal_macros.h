@@ -30,6 +30,16 @@
   (major1) == 4 && (major2) <  22 || \
   (major1) == 4 && (major2) == 22 && (minor) <= 0)
 #endif /* MIN_VERSION_base */
+/* package bytestring-0.12.2.0 */
+#ifndef VERSION_bytestring
+#define VERSION_bytestring "0.12.2.0"
+#endif /* VERSION_bytestring */
+#ifndef MIN_VERSION_bytestring
+#define MIN_VERSION_bytestring(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  12 || \
+  (major1) == 0 && (major2) == 12 && (minor) <= 2)
+#endif /* MIN_VERSION_bytestring */
 /* package containers-0.8 */
 #ifndef VERSION_containers
 #define VERSION_containers "0.8"
@@ -40,6 +50,16 @@
   (major1) == 0 && (major2) <  8 || \
   (major1) == 0 && (major2) == 8 && (minor) <= 0)
 #endif /* MIN_VERSION_containers */
+/* package directory-1.3.10.0 */
+#ifndef VERSION_directory
+#define VERSION_directory "1.3.10.0"
+#endif /* VERSION_directory */
+#ifndef MIN_VERSION_directory
+#define MIN_VERSION_directory(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  3 || \
+  (major1) == 1 && (major2) == 3 && (minor) <= 10)
+#endif /* MIN_VERSION_directory */
 /* package matrix-0.3.6.4 */
 #ifndef VERSION_matrix
 #define VERSION_matrix "0.3.6.4"

@@ -110,4 +110,6 @@ executable veitoris
         , vector
         , matrix
         , array
+        , bytestring
+        , directory
     default-language: Haskell2010

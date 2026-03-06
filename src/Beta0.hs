@@ -1,9 +1,9 @@
-module Beta0 (beta0) where 
+module Beta0 (beta0) where
 
 import Data.List (foldl', sortOn, tails)
 import qualified Data.Map as Map
 
-type Point = (Double, Double, Double)
+type Point = (Double, Double, Double, Double, Double, Double)
 
 type Edge = (Point, Point)
 
@@ -57,11 +57,14 @@ union p q dsu =
     (rq, dsu2) = find dsu1 q
 
 distance :: Point -> Point -> Double
-distance (x1, y1, z1) (x2, y2, z2) = sqrt (dx * dx + dy * dy + dz * dz)
+distance (x1, x2, x3, x4, x5, x6) (y1, y2, y3, y4, y5, y6) = sqrt (dx1 * dx1 + dx2 * dx2 + dx3 * dx3 + dx4 * dx4 + dx5 * dx5 + dx6 * dx6)
   where
-    dx = x2 - x1
-    dy = y2 - y1
-    dz = z2 - z1
+    dx1 = y1 - x1
+    dx2 = y2 - x2
+    dx3 = y3 - x3
+    dx4 = y4 - x4
+    dx5 = y5 - x5
+    dx6 = y6 - x6
 
 uniquePairs :: [a] -> [(a, a)]
 uniquePairs xs = [(x, y) | (x : rest) <- tails xs, y <- rest]
@@ -71,9 +74,6 @@ edgesWithValue pts = sortOn fst [(distance a b, (a, b)) | (a, b) <- uniquePairs 
 
 edgesAtScale :: Double -> [(Double, Edge)] -> [(Double, Edge)]
 edgesAtScale eps = filter (\(d, _) -> d <= eps)
-
-roots :: DSU -> [Point] -> [Maybe Point]
-roots dsu pts = map (fst . find dsu) pts
 
 components :: DSU -> [Point] -> Map.Map Point [Point]
 components dsu pts = Map.fromListWith (++) [(r, [p]) | p <- pts, Just r <- [fst (find dsu p)]]
@@ -88,23 +88,11 @@ beta0 eps pts =
       dF = foldl' (\d (_, (u, v)) -> union u v d) d0 es
    in numComponents dF pts
 
-
-
 r0 :: Double
 r0 = 1
 
 r1 :: Double
 r1 = 2
-
-torus :: Double -> Double -> Point
-torus u v =
-  ( (r1 + r0 * cos u) * sin v,
-    (r1 + r0 * cos u) * cos v,
-    r0 * sin u
-  )
-
-points :: [Point]
-points = [torus s t | s <- [0, 0.2 .. 2 * pi], t <- [0, 0.2 .. 2 * pi]]
 
 -- >>> beta0 0.20000731001 points
 -- 31

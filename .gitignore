@@ -1,0 +1,8 @@
+
+# generated climate data
+extracted/
+*.grib
+*.idx
+.venv/
+  
+.cabal/
